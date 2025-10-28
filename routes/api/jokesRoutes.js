@@ -8,16 +8,37 @@ router.get('/', (req, res)=> {
     // res.send('This be working')
     const url = 'https://api.sampleapis.com/jokes/goodJokes'
 
+    //! pagination 
+    const query = req.query ? req.query : {}
+
+    //! get page and limit
+    let page = parseInt(query.page) || 1
+    let limit = parseInt(query.limit) || 12
+
+    const startIdx = (page - 1) * limit
+    const endIdx = page * limit 
+
+    //! Will be storing the jokes in here
+    let jokesArr = []
+
     axios.get(url)
         .then(resp => {
-            res.render('pages/allJokes', {
-                title: 'All Jokes',
-                name: 'all jokes',
-                data: resp.data
-            })
+            
+            for (let i = startIdx; i < endIdx; i++) {
+                jokesArr = [...jokesArr, resp.data[i]]
+            }
+            
+                res.render('pages/allJokes', {
+                    title: 'All Jokes',
+                    name: 'All Jokes',
+                    data: jokesArr,
+                    prev: page > 1 ? page - 1 : null,
+                    next: endIdx >= jokesArr.length ? null : page + 1
+                })
         })
-
 })
+
+
 
 // !Joke Type
 //? localhost:3001/jokes/type/:type
