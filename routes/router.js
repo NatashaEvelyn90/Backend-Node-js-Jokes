@@ -3,6 +3,8 @@ const router = express.Router()
 const axios = require('axios')
 const getJoke = require('../helpers/getJoke')
 
+router.use(express.static('public'))
+
 //!HOMEPAGE http://localhost:3001 => home page
 router.get('/', (req, res) => {
     // res.send('working...') => dispaly home page
@@ -10,11 +12,6 @@ router.get('/', (req, res) => {
 
     axios.get(url)
         .then(resp => {
-            // console.log(resp.data)
-
-            //! moving to helper!
-            // const randomJoke = resp.data[Math.floor(Math.random() * resp.data.length)]
-
             res.render('pages/home', {
                 title: "Crazpicc's Funny Jokes",
                 name: "crazpicc's jokes app!",
