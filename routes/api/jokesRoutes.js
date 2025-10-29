@@ -66,7 +66,6 @@ router.get('/type/:type', (req, res)=> {
 router.get('/:id', (req,res)=> {
 
     const id = req.params.id
-
     const url = `https://api.sampleapis.com/jokes/goodJokes/${id}`
 
     axios.get(url)
@@ -76,7 +75,10 @@ router.get('/:id', (req,res)=> {
                 title: joke.setup,
                 name: joke.setup,
                 punchline: joke.punchline,
-                gif: getGif()
+                prev: joke.id == 7 ? 3 : joke.id - 1,
+                next: joke.id == 3 ? 7 : joke.id + 1,
+                gif: getGif(),
+                id: joke.id
             })
         })
 })
